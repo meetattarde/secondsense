@@ -1,0 +1,10 @@
+{
+  "name": "SecondSense — Voice-first Mobility Companion",
+  "short_name": "SecondSense",
+  "description": "Continuous scene awareness and walking navigation with voice-first controls.",
+  "start_url": "./",
+  "display": "standalone",
+  "background_color": "#081522",
+  "theme_color": "#091725",
+  "icons": [{ "src": "icon.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any maskable" }]
+}

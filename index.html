@@ -1,0 +1,132 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="theme-color" content="#091725" />
+  <meta name="description" content="SecondSense is a voice-first mobility companion prototype for scene awareness and walking navigation." />
+  <link rel="manifest" href="manifest.webmanifest" />
+  <link rel="icon" href="icon.svg" type="image/svg+xml" />
+  <link rel="stylesheet" href="styles.css" />
+  <title>SecondSense — Voice-first mobility companion</title>
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to main content</a>
+  <header class="topbar">
+    <a class="brand" href="#main" aria-label="SecondSense home"><span class="brand-mark" aria-hidden="true">S</span><span>SecondSense</span></a>
+    <span class="prototype-tag">SCIENCE EXHIBITION PROTOTYPE</span>
+  </header>
+
+  <main id="main">
+    <section class="welcome" aria-labelledby="welcome-title">
+      <p class="eyebrow">A VOICE-FIRST MOBILITY COMPANION</p>
+      <h1 id="welcome-title">Your world, spoken clearly.</h1>
+      <p>Ask naturally. SecondSense can describe familiar objects it recognizes, keep a place for Home, and open walking navigation.</p>
+    </section>
+
+    <section class="assistant-card" aria-labelledby="assistant-title">
+      <div class="assistant-heading">
+        <div><p class="eyebrow">YOUR ASSISTANT</p><h2 id="assistant-title">What would you like to do?</h2></div>
+        <span id="voice-indicator" class="voice-indicator" aria-hidden="true"></span>
+      </div>
+      <p id="assistant-status" class="assistant-status" aria-live="off">Start hands-free mode once. After permissions, speak naturally to control scanning, places, and navigation.</p>
+      <div class="assistant-actions">
+        <button id="talk-button" class="talk-button" type="button"><span aria-hidden="true">🎙</span><span id="talk-label">Start hands-free mode</span></button>
+        <button id="repeat-button" class="icon-button" type="button" aria-label="Repeat the last response">↻<span class="sr-only">Repeat</span></button>
+        <button id="speech-toggle" class="icon-button" type="button" aria-label="Turn spoken replies off" aria-pressed="true">🔊</button>
+        <button id="help-button" class="icon-button" type="button" aria-label="Hear what SecondSense can do">?</button>
+      </div>
+      <form id="text-command-form" class="text-command-form">
+        <label class="sr-only" for="text-command">Type a request</label>
+        <input id="text-command" type="text" autocomplete="off" placeholder="Try: take me home, or what’s around me?" />
+        <button class="button light-button" type="submit">Send</button>
+      </form>
+      <div class="heard" aria-live="off"><span>YOU SAID</span><strong id="heard-text">Nothing yet</strong></div>
+      <details class="examples">
+        <summary>Examples — speak naturally</summary>
+        <ul>
+          <li>“Can you take me back to my house?”</li>
+          <li>“I need to get to the library.”</li>
+          <li>“What’s around me right now?”</li>
+          <li>“Save where I am as home.”</li>
+          <li>“Pause scanning” or “Start scanning again.”</li>
+          <li>“Turn your voice replies off,” “repeat that,” or “help.”</li>
+        </ul>
+      </details>
+    </section>
+
+    <div class="main-grid">
+      <section class="card scene-card" aria-labelledby="scene-title">
+        <div class="card-heading">
+          <div><p class="eyebrow">SCENE AWARENESS</p><h2 id="scene-title">Keep looking ahead</h2></div>
+          <span id="camera-state" class="state-pill">Camera off</span>
+        </div>
+        <p class="body-copy">Start the rear camera once. SecondSense will keep checking for familiar objects until you pause it or turn the camera off.</p>
+        <div class="camera-frame" id="camera-frame">
+          <video id="camera-video" autoplay muted playsinline aria-label="Live rear camera view"></video>
+          <canvas id="detection-overlay" aria-hidden="true"></canvas>
+          <div id="camera-placeholder" class="camera-placeholder"><span class="camera-symbol" aria-hidden="true">◉</span><strong>Camera is off</strong><span>Start camera to begin continuous scanning</span></div>
+          <div id="camera-results" class="camera-results" aria-live="off">Ready when you are.</div>
+        </div>
+        <div class="button-row">
+          <button id="camera-button" class="button primary-button" type="button">Start camera and scan</button>
+          <button id="scan-button" class="button secondary-button" type="button" disabled>Pause scanning</button>
+        </div>
+        <div class="depth-box software-range-box">
+          <div><p class="eyebrow">NO EXTRA SENSOR NEEDED · VERY ROUGH</p><h3>Camera-only distance guess</h3></div>
+          <p class="body-copy">Uses a typical size for recognized object types and an assumed camera view angle. The real distance can be much wider than the estimate, especially if an object is partly hidden or an unusual size.</p>
+          <label class="range-toggle"><input id="range-estimate-toggle" type="checkbox" checked /> Speak broad camera-only estimates</label>
+          <p class="small-copy">The displayed range is an illustrative ½×–2× band, not a measured confidence interval. It must not guide walking decisions.</p>
+        </div>
+        <div class="depth-box">
+          <div><p class="eyebrow">SUPPORTED PHONES ONLY</p><h3>Center-view distance</h3></div>
+          <p id="depth-status" class="body-copy" aria-live="polite">An experimental phone depth sensor may provide an approximate range. Availability depends on your phone and browser.</p>
+          <p id="depth-reading" class="depth-reading" aria-live="off">No depth reading</p>
+          <div class="button-row">
+            <button id="depth-start" class="button secondary-button" type="button">Try hardware depth scan</button>
+            <button id="depth-speak" class="button secondary-button" type="button" disabled>Speak range</button>
+            <button id="depth-stop" class="button secondary-button" type="button" disabled>Stop depth scan</button>
+          </div>
+        </div>
+        <p class="safety-note"><strong>Important:</strong> Camera recognition can miss or mislabel things. Camera-only distances are guesses based on typical object sizes and may be substantially wrong. Hardware depth readings are available only on supported phones and refer to a small area at screen center. Neither feature tells you that a path is clear. Keep using your cane, guide dog, or other mobility aid.</p>
+      </section>
+
+      <section class="card places-card" aria-labelledby="places-title">
+        <p class="eyebrow">SAVED PLACE</p><h2 id="places-title">Get home in one request</h2>
+        <p id="home-summary" class="place-summary">Home hasn’t been saved yet.</p>
+        <form id="home-form">
+          <label for="home-input">Home address or place name</label>
+          <input id="home-input" type="text" autocomplete="street-address" placeholder="Example: 25 Park Street, Kolkata" />
+          <div class="button-row">
+            <button class="button primary-button" type="submit">Save Home</button>
+            <button id="save-current-home" class="button secondary-button" type="button">Save current location as Home</button>
+          </div>
+        </form>
+        <button id="home-directions" class="button route-button" type="button">Start walking navigation to Home</button>
+        <button id="forget-home" class="text-button" type="button">Forget saved Home</button>
+        <p class="small-copy">Maps opens with walking directions and requests turn-by-turn navigation. Google Maps supplies route distance and time.</p>
+      </section>
+
+      <section class="card location-card" aria-labelledby="location-title">
+        <p class="eyebrow">FIND YOUR POSITION</p><h2 id="location-title">Where am I?</h2>
+        <p id="location-result" class="place-summary" aria-live="off">Your location hasn’t been checked.</p>
+        <button id="location-button" class="button secondary-button" type="button">Speak my location</button>
+      </section>
+    </div>
+
+    <section class="card privacy-card" aria-labelledby="privacy-title">
+      <p class="eyebrow">BUILT FOR A CLEAR DEMO</p><h2 id="privacy-title">What happens on this phone</h2>
+      <ul class="privacy-list">
+        <li>Camera frames are analyzed in the browser. The object model is downloaded from the web the first time it is needed.</li>
+        <li>Home is saved in this browser on this device.</li>
+        <li>Voice recognition depends on the browser and may use its speech service. Camera and microphone permissions are requested when hands-free mode starts.</li>
+        <li>Navigation opens Google Maps for the actual route and turn-by-turn guidance.</li>
+      </ul>
+    </section>
+
+    <footer><p>SecondSense is an assistive technology prototype for demonstration and research. It is not yet validated for independent travel.</p></footer>
+  </main>
+  <div id="toast" class="toast" role="status" aria-live="polite"></div>
+  <script src="app.js" defer></script>
+</body>
+</html>
